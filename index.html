@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Raag & Scale Explorer — Musician live performance tool. Select scale, select Raag, view piano notation diagrams and chords.">
+  <title>🎵 Raag & Scale Notation Explorer</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ── HEADER ─────────────────────────────────────────────── -->
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <span class="logo-icon">🎹</span>
+      <div class="logo-text">
+        <h1 class="logo-title">Raag &amp; Scale Explorer</h1>
+        <span class="logo-sub">Live Musician's Notation &amp; Chords</span>
+      </div>
+    </div>
+
+    <!-- Active Scale & Raag Quick Status -->
+    <div class="header-status">
+      <div class="active-badge">
+        <span class="status-dot"></span>
+        <span>Scale: <strong id="header-scale-name">C#</strong></span>
+        <span class="meta-sep">·</span>
+        <span>Raag: <strong id="header-raag-name">Yaman</strong></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ── MAIN APPLICATION CONTAINER ─────────────────────────── -->
+<main class="app-container">
+
+  <!-- ── STEP 1: SELECT SCALE (SA) ────────────────────────── -->
+  <section class="step-card step-scale-section" aria-label="Step 1: Select Scale">
+    <div class="step-header">
+      <span class="step-num">Step 1</span>
+      <h2 class="step-title">Select Scale / Key (Sa)</h2>
+      <span class="step-desc">Choose the tonic / root note for your performance</span>
+    </div>
+
+    <div class="scale-buttons-grid" id="scale-buttons-bar" role="radiogroup" aria-label="Scale notes">
+      <!-- 12 Chromatic scale buttons injected by app.js -->
+    </div>
+  </section>
+
+  <!-- ── WORKSPACE: STEP 2 (RAAG LIST) + STEP 3 & 4 (DIAGRAM & CHORDS) ── -->
+  <div class="workspace-grid">
+
+    <!-- ── STEP 2: SELECT RAAG ────────────────────────────── -->
+    <aside class="step-card raag-sidebar" aria-label="Step 2: Select Raag">
+      <div class="step-header-compact">
+        <div class="step-title-row">
+          <span class="step-num">Step 2</span>
+          <h2 class="step-title">Select Raag</h2>
+        </div>
+        <span id="raag-count" class="raag-count-pill">18 Raags</span>
+      </div>
+
+      <!-- Quick Search Raag -->
+      <div class="raag-search-box">
+        <span class="search-icon">🔍</span>
+        <input
+          type="search"
+          id="raag-search-input"
+          placeholder="Search Raags (e.g. Yaman, Bhairav, Darbari)…"
+          autocomplete="off"
+          spellcheck="false"
+          aria-label="Search Raags"
+        >
+        <button id="search-clear-btn" aria-label="Clear search">✕</button>
+      </div>
+
+      <!-- Thaat Filter Chips -->
+      <div class="thaat-filter-bar" id="thaat-filters" role="group" aria-label="Filter by thaat">
+        <!-- Injected by app.js -->
+      </div>
+
+      <!-- Raags List -->
+      <div class="raag-items-container" id="raag-list" role="listbox" aria-label="List of Raags">
+        <!-- Populated by app.js -->
+      </div>
+    </aside>
+
+    <!-- ── STEP 3 & 4: NOTATION DIAGRAM & RELATED CHORDS ──── -->
+    <section class="notation-viewport" id="notation-viewport" aria-label="Raag notation diagram and chords">
+
+      <!-- ── STEP 3: EXACT PDF-STYLE NOTATION SHEET ───────── -->
+      <div id="pdf-piano-container">
+        <!-- Rendered by piano.js matching reference PDF -->
+      </div>
+
+      <!-- ── STEP 4: RELATED CHORDS SECTION ──────────────── -->
+      <section class="chord-voicings-panel" aria-label="Related chord voicings">
+        <div class="panel-section-header">
+          <h3 class="panel-section-title">
+            <span class="icon">🎹</span> Piano Chord Voicings in Scale <span id="voicings-scale-badge" class="scale-accent-badge">C#</span>
+          </h3>
+          <span class="section-note">Visual key diagrams for chords belonging to this Raag</span>
+        </div>
+
+        <div id="chord-voicings-grid">
+          <!-- Rendered by chord-chart.js -->
+        </div>
+      </section>
+
+      <!-- ── RAAG METADATA & NOTE MAPPING ─────────────────── -->
+      <section class="raag-meta-panel" aria-label="Raag information and note mapping">
+        <div class="panel-section-header">
+          <h3 class="panel-section-title">
+            <span class="icon">🎼</span> Note Mapping &amp; Raag Characteristics
+          </h3>
+        </div>
+
+        <!-- Raag Quick Stats (Thaat, Vadi, Samvadi, Mood, Time) -->
+        <div class="raag-stats-grid">
+          <div class="stat-card">
+            <span class="stat-label">Thaat</span>
+            <strong id="stat-thaat" class="stat-val">—</strong>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Vadi / Samvadi</span>
+            <strong id="stat-vadi-samvadi" class="stat-val">—</strong>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Time of Day</span>
+            <strong id="stat-time" class="stat-val">—</strong>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Dominant Mood (Rasa)</span>
+            <strong id="stat-mood" class="stat-val">—</strong>
+          </div>
+        </div>
+
+        <p id="stat-description" class="raag-description-text"></p>
+
+        <!-- Note Mapping Table -->
+        <div class="note-table-wrapper">
+          <table class="note-table" aria-label="Sargam to Western note mapping in selected scale">
+            <thead>
+              <tr>
+                <th scope="col">Sargam</th>
+                <th scope="col">Piano Note (Sharps)</th>
+                <th scope="col">Key Type</th>
+                <th scope="col">Interval from Sa</th>
+              </tr>
+            </thead>
+            <tbody id="note-table-body">
+              <!-- Populated by app.js -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </section>
+
+  </div>
+</main>
+
+<!-- Audio Toast -->
+<div id="app-toast" role="status" aria-live="polite"></div>
+
+<!-- ── Scripts ────────────────────────────────────────────── -->
+<script src="data/raags.js"></script>
+<script src="components/piano.js"></script>
+<script src="components/chord-chart.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>

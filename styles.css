@@ -1,0 +1,969 @@
+/* ============================================================
+   RAAG & SCALE EXPLORER — Stylesheet
+   Pure Raag & Scale Notation with Authentic PDF Piano Sheet
+   ============================================================ */
+
+/* ── Reset & Custom Properties ───────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:           #0a0a10;
+  --bg-2:         #10101a;
+  --bg-3:         #161624;
+  --surface:      #1a1a2b;
+  --surface-2:    #222238;
+  --border:       #2a2a42;
+  --border-focus: #e04a2f;
+  --gold:         #FFD700;
+  --gold-dim:     #FFAA33;
+  --amber:        #E67E22;
+  --red-sa:       #E04A2F;
+  --text:         #f0f0f8;
+  --text-2:       #a4a4be;
+  --text-3:       #646480;
+  --radius:       12px;
+  --radius-sm:    8px;
+  --shadow:       0 8px 30px rgba(0,0,0,0.5);
+  --shadow-lg:    0 16px 48px rgba(0,0,0,0.65);
+  --font:         'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Fira Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Background Subtle Music Grid */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(224, 74, 47, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 215, 0, 0.02) 1px, transparent 1px);
+  background-size: 36px 36px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Header ──────────────────────────────────────────────── */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10, 10, 16, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+}
+
+.header-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 64px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--gold);
+  letter-spacing: .4px;
+  line-height: 1.2;
+}
+
+.logo-sub {
+  font-size: 11px;
+  color: var(--text-2);
+  letter-spacing: .2px;
+}
+
+.active-badge {
+  background: rgba(255, 215, 0, 0.1);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  color: var(--text);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.active-badge strong {
+  color: var(--gold);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--red-sa);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--red-sa);
+}
+
+.meta-sep { color: var(--text-3); }
+
+/* ── Main Container ──────────────────────────────────────── */
+.app-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px 24px 60px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Step Cards ──────────────────────────────────────────── */
+.step-card {
+  background: var(--bg-2);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.step-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.step-num {
+  background: linear-gradient(135deg, var(--red-sa), var(--amber));
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.step-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.step-desc {
+  font-size: 13px;
+  color: var(--text-3);
+  margin-left: auto;
+}
+
+/* ── STEP 1: Scale Selector Bar ──────────────────────────── */
+.step-scale-section {
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  border-left: 4px solid var(--red-sa);
+}
+
+.scale-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 10px;
+}
+
+.scale-btn {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 6px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.scale-btn:hover {
+  background: var(--surface-2);
+  border-color: var(--amber);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(230, 126, 34, 0.2);
+}
+
+.scale-btn.black-note {
+  background: #12121c;
+  border-color: #2e2e42;
+}
+
+.scale-btn.white-note {
+  background: #1a1a28;
+}
+
+.scale-btn.active {
+  background: linear-gradient(180deg, #2a1616 0%, #1a1a28 100%);
+  border-color: var(--red-sa);
+  box-shadow: 0 0 0 2px rgba(224, 74, 47, 0.3), 0 4px 16px rgba(224, 74, 47, 0.25);
+  transform: translateY(-2px);
+}
+
+.scale-note-text {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text);
+  font-family: var(--font-mono);
+}
+
+.scale-btn.active .scale-note-text {
+  color: #FFFFFF;
+}
+
+.scale-btn.black-note .scale-note-text {
+  color: var(--gold);
+}
+
+.scale-type-sub {
+  font-size: 10px;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.scale-btn.active .scale-type-sub {
+  color: var(--red-sa);
+  font-weight: 700;
+}
+
+/* ── Workspace Grid ──────────────────────────────────────── */
+.workspace-grid {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* ── STEP 2: Raag Sidebar ────────────────────────────────── */
+.raag-sidebar {
+  padding: 20px;
+  position: sticky;
+  top: 84px;
+  max-height: calc(100vh - 104px);
+  display: flex;
+  flex-direction: column;
+}
+
+.step-header-compact {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.step-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.raag-count-pill {
+  font-size: 11px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.raag-search-box {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.raag-search-box .search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: var(--text-3);
+  pointer-events: none;
+}
+
+#raag-search-input {
+  width: 100%;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 34px 10px 36px;
+  font-size: 13px;
+  color: var(--text);
+  outline: none;
+  font-family: var(--font);
+  transition: border-color 0.2s;
+}
+
+#raag-search-input:focus {
+  border-color: var(--gold-dim);
+}
+
+#search-clear-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-3);
+  cursor: pointer;
+  font-size: 14px;
+  display: none;
+}
+
+/* Thaat Filter Chips */
+.thaat-filter-bar {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+  scrollbar-width: none;
+}
+
+.thaat-filter-bar::-webkit-scrollbar { display: none; }
+
+.thaat-chip {
+  flex-shrink: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  border-radius: 14px;
+  padding: 4px 10px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.thaat-chip:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.thaat-chip.active {
+  background: var(--amber);
+  border-color: var(--amber);
+  color: #FFFFFF;
+  font-weight: 700;
+}
+
+/* Raags List */
+.raag-items-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+  flex: 1;
+}
+
+.raag-item-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.15s;
+}
+
+.raag-item-card:hover {
+  background: var(--surface-2);
+  border-color: var(--amber);
+  transform: translateX(2px);
+}
+
+.raag-item-card.active {
+  background: var(--surface-2);
+  border-color: var(--gold);
+  box-shadow: 0 0 0 1.5px rgba(255, 215, 0, 0.3), var(--shadow);
+}
+
+.raag-item-dot {
+  width: 6px;
+  height: 38px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.raag-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.raag-item-name-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.raag-item-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.raag-item-hindi {
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.raag-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  font-size: 11px;
+}
+
+.raag-thaat-badge {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  color: var(--text-2);
+  border-radius: 4px;
+  padding: 1px 6px;
+}
+
+.raag-time-tag {
+  color: var(--text-3);
+}
+
+.empty-raags {
+  text-align: center;
+  padding: 36px 12px;
+  color: var(--text-3);
+}
+
+.empty-raags .empty-icon {
+  font-size: 28px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* ── STEP 3: EXACT PDF-STYLE NOTATION SHEET ──────────────── */
+.notation-viewport {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.pdf-piano-card {
+  background: #FFFFFF;
+  color: #1A1A1A;
+  border-radius: 14px;
+  padding: 32px 36px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+  border: 2px solid #E2E8F0;
+}
+
+.pdf-card-header {
+  margin-bottom: 22px;
+}
+
+.pdf-raag-title {
+  font-size: 34px;
+  font-weight: 800;
+  color: #111111;
+  letter-spacing: -0.6px;
+  line-height: 1.15;
+}
+
+.pdf-scale-subtitle {
+  font-size: 16px;
+  color: #555555;
+  margin-top: 6px;
+}
+
+.pdf-scale-subtitle strong {
+  color: #111111;
+  font-size: 17px;
+}
+
+.pdf-piano-frame {
+  margin-bottom: 24px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.pdf-piano-svg {
+  display: block;
+  width: 100%;
+  min-width: 680px;
+  max-width: 960px;
+  height: auto;
+}
+
+.piano-key-rect {
+  cursor: pointer;
+  transition: opacity 0.1s, filter 0.1s;
+}
+
+.piano-key-group:hover .piano-key-rect {
+  filter: brightness(1.08);
+}
+
+.piano-key-group.key-pressed .piano-key-rect {
+  filter: brightness(1.25) !important;
+}
+
+/* Notes section (Aaroh / Avroh) */
+.pdf-notes-section {
+  margin-bottom: 22px;
+}
+
+.pdf-notes-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.pdf-notes-label {
+  font-weight: 800;
+  color: #111111;
+  min-width: 70px;
+  font-size: 16px;
+  margin-top: 2px;
+}
+
+.pdf-notes-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  color: #222222;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.pdf-flow-tag {
+  color: #666666;
+  font-size: 13px;
+  font-family: var(--font);
+  margin-right: 14px;
+  font-weight: 700;
+  min-width: 48px;
+  display: inline-block;
+}
+
+/* PDF Chords Section */
+.pdf-chords-section {
+  margin-bottom: 24px;
+}
+
+.pdf-chords-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.pdf-chords-label {
+  font-weight: 800;
+  color: #111111;
+  min-width: 70px;
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+.pdf-chords-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  flex: 1;
+}
+
+.pdf-chord-pill {
+  background: #FAFAFA;
+  border: 1.5px solid #D5D8DC;
+  border-radius: 8px;
+  padding: 7px 15px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1A1A1A;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: var(--font);
+}
+
+.pdf-chord-pill:hover {
+  background: #FEF9E7;
+  border-color: #F39C12;
+  color: #B7950B;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.pdf-chord-pill.pill-active {
+  background: #F39C12;
+  color: #FFFFFF;
+  border-color: #D68910;
+  transform: scale(0.96);
+}
+
+/* PDF Footnote */
+.pdf-footnote {
+  border-top: 1px solid #EEEEEE;
+  padding-top: 16px;
+  font-size: 13px;
+  color: #666666;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.fn-red {
+  color: var(--red-sa);
+  font-weight: 700;
+  font-style: normal;
+}
+
+.fn-amber {
+  color: #D35400;
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* ── STEP 4: Related Chords Panel ────────────────────────── */
+.chord-voicings-panel {
+  background: var(--bg-2);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+  box-shadow: var(--shadow);
+}
+
+.panel-section-header {
+  margin-bottom: 20px;
+}
+
+.panel-section-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-section-title .icon {
+  font-size: 18px;
+}
+
+.scale-accent-badge {
+  background: var(--red-sa);
+  color: #FFFFFF;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+
+.section-note {
+  font-size: 12px;
+  color: var(--text-3);
+  display: block;
+  margin-top: 2px;
+}
+
+/* Chord Voicings Grid */
+.chord-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.chord-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 12px;
+  min-width: 120px;
+  text-align: center;
+  transition: all 0.15s ease;
+}
+
+.chord-card:hover {
+  border-color: var(--amber);
+  background: var(--surface-2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+
+.chord-card.card-pressed {
+  border-color: var(--gold);
+  transform: scale(0.96);
+}
+
+.chord-header {
+  margin-bottom: 10px;
+}
+
+.chord-name-label {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--gold);
+  display: block;
+}
+
+.chord-type-label {
+  font-size: 11px;
+  color: var(--text-3);
+  display: block;
+  margin-top: 2px;
+}
+
+.mini-piano-svg {
+  display: block;
+  margin: 0 auto;
+}
+
+.chord-notes-row {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.chord-note-pill {
+  font-size: 10px;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 6px;
+  color: var(--text);
+  font-family: var(--font-mono);
+}
+
+/* ── Raag Metadata & Note Mapping Panel ───────────────────── */
+.raag-meta-panel {
+  background: var(--bg-2);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+  box-shadow: var(--shadow);
+}
+
+.raag-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.stat-val {
+  font-size: 14px;
+  color: var(--text);
+  font-weight: 700;
+}
+
+.raag-description-text {
+  font-size: 14px;
+  color: var(--text-2);
+  line-height: 1.7;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--amber);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin-bottom: 22px;
+}
+
+/* Note Table */
+.note-table-wrapper {
+  overflow-x: auto;
+}
+
+.note-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.note-table th {
+  text-align: left;
+  padding: 10px 14px;
+  background: var(--surface);
+  color: var(--text-3);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  border-bottom: 1.5px solid var(--border);
+}
+
+.note-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(42, 42, 66, 0.5);
+  color: var(--text-2);
+}
+
+.note-table tr.root-row td {
+  background: rgba(224, 74, 47, 0.08);
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.note-name-pill {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 4px;
+  font-weight: 800;
+  font-family: var(--font-mono);
+}
+
+.note-name-pill.sa {
+  background: var(--red-sa);
+  color: #FFFFFF;
+}
+
+.note-name-pill.raag {
+  background: #F5B041;
+  color: #111111;
+}
+
+.sa-tag {
+  font-size: 10px;
+  background: rgba(224, 74, 47, 0.2);
+  color: var(--red-sa);
+  border: 1px solid rgba(224, 74, 47, 0.4);
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-left: 6px;
+  font-weight: 700;
+}
+
+.key-badge {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.key-badge.white {
+  background: #ECEFF1;
+  color: #37474F;
+  border: 1px solid #CFD8DC;
+}
+
+.key-badge.black {
+  background: #263238;
+  color: #ECEFF1;
+  border: 1px solid #37474F;
+}
+
+/* ── Toast ───────────────────────────────────────────────── */
+#app-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  background: var(--surface-2);
+  border: 1px solid var(--gold);
+  border-radius: 24px;
+  padding: 10px 22px;
+  font-size: 13px;
+  color: var(--gold);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s, transform .25s;
+  z-index: 999;
+  box-shadow: var(--shadow);
+}
+
+#app-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .scale-buttons-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  .workspace-grid {
+    grid-template-columns: 1fr;
+  }
+  .raag-sidebar {
+    position: static;
+    max-height: 380px;
+  }
+  .raag-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 650px) {
+  .header-inner { padding: 0 14px; }
+  .active-badge { display: none; }
+  .scale-buttons-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .pdf-piano-card {
+    padding: 20px 16px;
+  }
+  .pdf-raag-title {
+    font-size: 24px;
+  }
+  .step-scale-section {
+    padding: 16px;
+  }
+  .chord-voicings-panel, .raag-meta-panel {
+    padding: 18px 16px;
+  }
+}
